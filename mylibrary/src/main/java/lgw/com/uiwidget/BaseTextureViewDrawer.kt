@@ -2,6 +2,8 @@ package lgw.com.uiwidget
 
 import android.graphics.*
 import android.view.TextureView
+import java.util.concurrent.locks.ReentrantLock
+
 
 abstract class BaseTextureViewDrawer() : Any(), TextureView.SurfaceTextureListener {
 
@@ -12,10 +14,6 @@ abstract class BaseTextureViewDrawer() : Any(), TextureView.SurfaceTextureListen
     var mCy: Float = 0.toFloat()
     var mClearPaint: Paint = Paint()
     protected var mPaint: Paint = Paint()
-    var mPause: Boolean = false
-    var mStop: Boolean = false
-    lateinit var mThread: Thread
-    private val mLock = java.lang.Object()
 
     override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
         val isSizeChanged = (width != mSurfaceWidth || height != mSurfaceHeight)
@@ -46,32 +44,50 @@ abstract class BaseTextureViewDrawer() : Any(), TextureView.SurfaceTextureListen
         onSurfaceTextureSizeChanged(surface, width, height)
     }
 
+
+    private val lock = ReentrantLock()
+    private val lockCondition = lock.newCondition()
+    @Volatile
+    private var mPause: Boolean = false
+    var mStop: Boolean = false
+    lateinit var mThread: Thread
+
     fun start(textureView: TextureView) {
         mPause = false
         mStop = false
         mThread = Thread {
             //if want share thread, extract it
             while (!mStop) {
-                if (mPause) {
-                    mLock.wait();
+                lock.lock()
+                try {
+                    if (mPause) {
+                        lockCondition.await()
+                    }
+                    val canvas = textureView.lockCanvas()
+                    if (canvas == null || mSurfaceWidth <= 0 || mSurfaceHeight <= 0) {
+                        continue
+                    }
+                    canvas.drawPaint(mClearPaint)
+                    onFrameUpdate(canvas, mUpdateOnFrame++)   // cycle value
+                    textureView.unlockCanvasAndPost(canvas)
+                    Thread.sleep(32) //30 fps
+                } catch (e: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                } finally {
+                    lock.unlock()
                 }
-                val canvas = textureView.lockCanvas()
-                if (canvas == null || mSurfaceWidth <= 0 || mSurfaceHeight <= 0) {
-                    continue
-                }
-                canvas.drawPaint(mClearPaint)
-                onFrameUpdate(canvas, mUpdateOnFrame++)   // cycle value
-                textureView.unlockCanvasAndPost(canvas)
-                Thread.sleep(32) //30 fps
             }
         }
         mThread.start()
     }
 
     fun resume() {
-        if (mPause) {
+        lock.lock()
+        try {
+            lockCondition.signal();
             mPause = false
-            mLock.notify()
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -81,7 +97,6 @@ abstract class BaseTextureViewDrawer() : Any(), TextureView.SurfaceTextureListen
 
     fun stop() {
         mStop = true
-        mPause = false
         resume()
     }
 }
