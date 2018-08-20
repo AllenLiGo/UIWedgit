@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import lgw.com.uiwidget.WaveTextureViewDrawer
 
 class MainActivity : AppCompatActivity() {
@@ -18,20 +19,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val recyclerView = findViewById(R.id.act_main_recycler_view) as RecyclerView
-        recyclerView.setHasFixedSize(true)
+        act_main_recycler_view.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(this)
-        recyclerView.setLayoutManager(layoutManager)
+        act_main_recycler_view.setLayoutManager(layoutManager)
 
         val mDataSet = ArrayList<MainItem>()
         addItems(mDataSet)
 
         val adapter = MainAdapter(mDataSet)
-        recyclerView.setAdapter(adapter)
+        act_main_recycler_view.setAdapter(adapter)
     }
 
     private fun addItems(dataSet: MutableList<MainItem>) {
         dataSet.add(MainItem(WaveTextureViewDrawer::class.java!!, BeziarWaveActivity::class.java!!))
+        dataSet.add(MainItem(RecyclerView::class.java!!, RecycleViewActivity::class.java!!))
     }
 
     private class MainAdapter internal constructor(private val mDataSet: List<MainItem>?) : RecyclerView.Adapter<ViewHolder>() {
