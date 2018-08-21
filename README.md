@@ -1,4 +1,12 @@
 # UIWedgit
-Implement wave animation with Beziar by kotlin
+kotlin:   wave animation with Beziar 
+![screen capture](https://github.com/AllenLiGo/UIWedgit/screen_shot_wave.png)
 
-![screen capture](https://github.com/AllenLiGo/UIWedgit/blob/master/app/Screen_Shot.png)
+android:   swiping and pulling down
+![screen capture](https://github.com/AllenLiGo/UIWedgit/screen_shot_swipe.png)
+
+kotlin:   sticky header and virtual view
+![screen capture](https://github.com/AllenLiGo/UIWedgit/screen_shot_virtualview.png)
+![screen capture](https://github.com/AllenLiGo/UIWedgit/screen_shot_sticky_header.png)
+
+ 
