@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
+import lgw.com.uiwidget.StickyHeaderDecoration
 import lgw.com.uiwidget.WaveTextureViewDrawer
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +34,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun addItems(dataSet: MutableList<MainItem>) {
         dataSet.add(MainItem(WaveTextureViewDrawer::class.java!!, BeziarWaveActivity::class.java!!))
-        dataSet.add(MainItem(RecyclerView::class.java!!, RecycleViewActivity::class.java!!))
+        dataSet.add(MainItem(ItemTouchHelper::class.java!!, RecycleViewForSwipeActivity::class.java!!))
+        dataSet.add(MainItem(StickyHeaderDecoration::class.java!!, RecycleViewForStickyActivity::class.java!!))
     }
 
     private class MainAdapter internal constructor(private val mDataSet: List<MainItem>?) : RecyclerView.Adapter<ViewHolder>() {

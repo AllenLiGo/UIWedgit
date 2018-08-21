@@ -18,7 +18,7 @@ import java.util.List;
 
 import lgw.com.uiwedgit.adapter.RefreshAdapter;
 
-public class RecycleViewActivity extends AppCompatActivity {
+public class RecycleViewForSwipeActivity extends AppCompatActivity {
 
   RecyclerView mRecyclerView;
   SwipeRefreshLayout mSwipeRefreshLayout;
@@ -82,7 +82,7 @@ public class RecycleViewActivity extends AppCompatActivity {
             }
             mRefreshAdapter.updateItems( headDatas, 5 );
             mSwipeRefreshLayout.setRefreshing( false );
-            Toast.makeText( RecycleViewActivity.this, "updated " + headDatas.size() + " items", Toast.LENGTH_SHORT ).show();
+            Toast.makeText( RecycleViewForSwipeActivity.this, "updated " + headDatas.size() + " items", Toast.LENGTH_SHORT ).show();
           }
 
         }, 3000 );
@@ -133,7 +133,7 @@ public class RecycleViewActivity extends AppCompatActivity {
               } else {
                 mRefreshAdapter.setLoadState( RefreshAdapter.LOAD_DEFAULT );
               }
-              Toast.makeText( RecycleViewActivity.this, "load more " + footerDatas.size() + " items", Toast.LENGTH_SHORT ).show();
+              Toast.makeText( RecycleViewForSwipeActivity.this, "load more " + footerDatas.size() + " items", Toast.LENGTH_SHORT ).show();
             }
           }, 3000 );
           mRefreshAdapter.setLoadState( RefreshAdapter.LOADING );

@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".BeziarWaveActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".RecycleViewActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".RecycleViewForSwipeActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".RecycleViewForStickyActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
